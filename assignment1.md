@@ -13,7 +13,7 @@ Reproducible Research: Peer Assessment 1
     agg <- aggregate(steps~date, act, sum)
     ggplot(agg, aes(steps)) + geom_histogram(binwidth = 1000)
 
-![](assignment1_files/figure-markdown_strict/unnamed-chunk-2-1.png)
+![](unnamed-chunk-2-1.png)
 
 3. Mean and median number of steps taken each day
 -------------------------------------------------
