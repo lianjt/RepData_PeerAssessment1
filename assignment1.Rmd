@@ -7,24 +7,29 @@ date: "15-Jan-2017"
 
 ## 1. Loading and preprocessing the data
 ```{r}
-library("ggplot2")  
+# use ggplot
+library("ggplot2")
+# read data
 act <- read.csv("activity.csv")
 ```
 
 ## 2. Histogram of the total number of steps taken each day
 ```{r}
+# aggregate steps group by date and sum them
 agg <- aggregate(steps~date, act, sum)
 ggplot(agg, aes(steps)) + geom_histogram(binwidth = 1000)
 ```
 
 ## 3. Mean and median number of steps taken each day
 ```{r}
+# mean and median
 mean(agg$steps)
 median(agg$steps)
 ```
 
 ## 4. Time series plot of the average number of steps taken
 ```{r}
+# aggregate steps by interval and take mean
 step_interval <- aggregate(steps ~ interval, act, mean)
 ggplot(step_interval, aes(interval, steps)) + geom_line() + xlab("5-minute interval") + 
     ylab("average number of steps taken")
@@ -32,16 +37,19 @@ ggplot(step_interval, aes(interval, steps)) + geom_line() + xlab("5-minute inter
 
 ## 5. The 5-minute interval that, on average, contains the maximum number of steps
 ```{r}
+# pick the maximum from the data
 step_interval[which.max(step_interval$steps), ]
 ```
 
 ## 6. Code to describe and show a strategy for imputing missing data
 ```{r}
+# create is NA table
 missing <- is.na(act$steps)
 table(missing)
 ```
 ## 7. Histogram of the total number of steps taken each day after missing values are imputed
 ```{r}
+# create function to replace NA to mean value of that interval
 imputed <- function (step, interval) {
     filled <- NULL
     if (!is.na(step)) {
@@ -52,15 +60,20 @@ imputed <- function (step, interval) {
     return(filled)
 }
 
+# back up data
 filledDate <- act
+# apply this for each row
 filledDate$steps <- mapply(imputed, filledDate$steps, filledDate$interval)
+# aggregate
 stepsByDate <- aggregate(steps~date, filledDate, sum)
+# make hist figure
 hist(stepsByDate$steps, xlab = "steps", ylab = "counts", main = "total number of steps taken each day")
 
 ```
 
 ## 8. Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 ```{r}
+# function to replace date to "weekday" or "weekend"
 weekdaysOrWeekend <- function(day) {
     day <- weekdays(day)
     if (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")) {
@@ -70,9 +83,12 @@ weekdaysOrWeekend <- function(day) {
     }
 }
 
+# convert char to date
 filledDate$date <- as.Date(filledDate$date)
+# apply function to each row
 filledDate$date <- mapply(weekdaysOrWeekend, filledDate$date)
 
+# aggregate data group first by interval and next is date
 aggByDate <- aggregate(steps~interval + date, filledDate, sum)
 ggplot(aggByDate, aes(interval, steps)) + geom_line() + facet_grid(date ~ .) + 
     xlab("5 minutes interval") + ylab("Numbers of Steps")
