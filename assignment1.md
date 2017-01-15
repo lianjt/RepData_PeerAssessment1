@@ -33,7 +33,7 @@ Reproducible Research: Peer Assessment 1
     ggplot(step_interval, aes(interval, steps)) + geom_line() + xlab("5-minute interval") + 
         ylab("average number of steps taken")
 
-![](assignment1_files/figure-markdown_strict/unnamed-chunk-4-1.png)
+![](unnamed-chunk-4-1.png)
 
 5. The 5-minute interval that, on average, contains the maximum number of steps
 -------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ Reproducible Research: Peer Assessment 1
     stepsByDate <- aggregate(steps~date, filledDate, sum)
     hist(stepsByDate$steps, xlab = "steps", ylab = "counts", main = "total number of steps taken each day")
 
-![](assignment1_files/figure-markdown_strict/unnamed-chunk-7-1.png)
+![](unnamed-chunk-7-1.png)
 
 8. Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 ------------------------------------------------------------------------------------------------------------
@@ -92,4 +92,4 @@ Reproducible Research: Peer Assessment 1
     ggplot(aggByDate, aes(interval, steps)) + geom_line() + facet_grid(date ~ .) + 
         xlab("5 minutes interval") + ylab("Numbers of Steps")
 
-![](assignment1_files/figure-markdown_strict/unnamed-chunk-8-1.png)
+![](unnamed-chunk-8-1.png)
